@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>rs2 scan 2025-09-01</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --card-bg: #0b1221;
+      --card-border: #1f2937;
+      --plot-bg: #0b1221;
+      --grid: #1f2937;
+      --accent-1: #38bdf8;
+      --accent-2: #fbbf24;
+      --accent-3: #34d399;
+    }
+    body.light {
+      --bg: #f6f8fb;
+      --text: #0f172a;
+      --muted: #4b5563;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+      --plot-bg: #ffffff;
+      --grid: #e5e7eb;
+      --accent-1: #2563eb;
+      --accent-2: #ea580c;
+      --accent-3: #16a34a;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    h1 { margin: 0; }
+    h3 { margin-bottom: 6px; }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .toggle {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .btn {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 12px 14px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    }
+    .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .value { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+      margin: 18px 0;
+    }
+    .chart {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    }
+    .tables {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+    }
+    .table-block {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    }
+    .table-head, .chart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text);
+      font-size: 13px;
+    }
+    .data-table th, .data-table td {
+      border: 1px solid var(--card-border);
+      padding: 6px 8px;
+      text-align: left;
+    }
+    .data-table th { background: var(--plot-bg); }
+    .muted { color: var(--muted); font-size: 13px; }
+    .notes {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+    }
+    .notes ul { margin: 6px 0 0 16px; padding: 0; }
+    .notes li { margin-bottom: 4px; line-height: 1.5; }
+  </style>
+</head>
+<body class="dark">
+  <div class="header">
+    <h1>rs2 scan 2025-09-01</h1>
+    <button id="theme-toggle" class="toggle" type="button">Switch to light mode</button>
+  </div>
+  <div class="cards">
+        <div class="card">
+            <div class="label">Total scans</div>
+            <div class="value">25,221</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Average vehicle age</div>
+            <div class="value">15.18</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Average mileage</div>
+            <div class="value">161,571.00</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Average ABS code count</div>
+            <div class="value">1.27</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Average SRS code count</div>
+            <div class="value">1.02</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Maintenance parts (total)</div>
+            <div class="value">27,435</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Predicted parts (total)</div>
+            <div class="value">88,346</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Unique VINs</div>
+            <div class="value">15,143</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">States covered</div>
+            <div class="value">54</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Repeat users</div>
+            <div class="value">5,404</div>
+        </div>
+        
+        <div class="card">
+            <div class="label">Repeat user share</div>
+            <div class="value">38.0%</div>
+        </div>
+        </div>
+  <div class="notes">
+    <strong>Metric definitions</strong>
+    <ul><li><strong>Total scans:</strong> All scan events in the dataset.</li><li><strong>Average vehicle age:</strong> Mean of (2026 - Year) for valid years.</li><li><strong>Average mileage:</strong> Mean of mileage across scans.</li><li><strong>Average ABS code count:</strong> Mean of TotalAbsCodes where present.</li><li><strong>Average SRS code count:</strong> Mean of TotalSrsCodes where present.</li><li><strong>Maintenance parts (total):</strong> Sum of MaintenancePartsCount.</li><li><strong>Predicted parts (total):</strong> Sum of PredictedPartsCount.</li><li><strong>Unique VINs:</strong> Distinct VINs scanned.</li><li><strong>States covered:</strong> States with at least one scan.</li><li><strong>Repeat users:</strong> Users with more than one scan.</li><li><strong>Repeat user share:</strong> Share of users that are repeat users.</li></ul>
+  </div>
+  <div class="tables">
+    <div class='table-block'><div class='table-head'><h3>Top 10 vehicles (Year, Make, Model)</h3><button class='btn' onclick="downloadTable('top_vehicles')">Download CSV</button></div><table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Vehicle</th>
+      <th>Scans</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2013 FORD F150</td>
+      <td>111</td>
+    </tr>
+    <tr>
+      <td>2007 CHEVROLET SILVERADO</td>
+      <td>93</td>
+    </tr>
+    <tr>
+      <td>2010 FORD F150</td>
+      <td>91</td>
+    </tr>
+    <tr>
+      <td>2003 CHEVROLET SILVERADO</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <td>2013 CHEVROLET SILVERADO</td>
+      <td>85</td>
+    </tr>
+    <tr>
+      <td>2017 CHEVROLET SILVERADO</td>
+      <td>84</td>
+    </tr>
+    <tr>
+      <td>2005 FORD F150</td>
+      <td>81</td>
+    </tr>
+    <tr>
+      <td>2014 CHEVROLET SILVERADO</td>
+      <td>81</td>
+    </tr>
+    <tr>
+      <td>2016 RAM 1500</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <td>2008 CHEVROLET SILVERADO</td>
+      <td>75</td>
+    </tr>
+  </tbody>
+</table></div><div class='table-block'><div class='table-head'><h3>Top 5 scan tools (UsbProductId)</h3><button class='btn' onclick="downloadTable('top_usb')">Download CSV</button></div><table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>UsbProductId</th>
+      <th>Scans</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>796</td>
+      <td>11105</td>
+    </tr>
+    <tr>
+      <td>942</td>
+      <td>3032</td>
+    </tr>
+    <tr>
+      <td>795</td>
+      <td>2440</td>
+    </tr>
+    <tr>
+      <td>932</td>
+      <td>1130</td>
+    </tr>
+    <tr>
+      <td>937</td>
+      <td>984</td>
+    </tr>
+  </tbody>
+</table></div><div class='table-block'><div class='table-head'><h3>Top 10 MIL DTC with common parts</h3><button class='btn' onclick="downloadTable('mil_dtc')">Download CSV</button></div><table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>MIL DTC</th>
+      <th>Scans</th>
+      <th>Top Parts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>P0420</td>
+      <td>860</td>
+      <td>Catalytic Converter (601), Catalytic Converter with Integrated Exhaust Manifold (168), Exhaust Manifold Gasket (110)</td>
+    </tr>
+    <tr>
+      <td>P0300</td>
+      <td>525</td>
+      <td>Spark Plug (282), Ignition Coil (188), Fuel System Cleaner (145)</td>
+    </tr>
+    <tr>
+      <td>P0171</td>
+      <td>439</td>
+      <td>Mass Air Flow Sensor (292), Engine Intake Manifold Gasket (89), PCV Valve (63)</td>
+    </tr>
+    <tr>
+      <td>P0456</td>
+      <td>293</td>
+      <td>Fuel Tank Cap (142), Evaporative System Integrity Module (ESIM) (124), Vapor Canister Purge Valve (62)</td>
+    </tr>
+    <tr>
+      <td>P0430</td>
+      <td>284</td>
+      <td>Catalytic Converter (217), Oxygen Sensor (65), Catalytic Converter with Integrated Exhaust Manifold (63)</td>
+    </tr>
+    <tr>
+      <td>P0301</td>
+      <td>274</td>
+      <td>Spark Plug (248), Ignition Coil (222), Fuel Injector (53)</td>
+    </tr>
+    <tr>
+      <td>P0302</td>
+      <td>265</td>
+      <td>Ignition Coil (208), Spark Plug (204), Fuel Injector (35)</td>
+    </tr>
+    <tr>
+      <td>P0455</td>
+      <td>235</td>
+      <td>Fuel Tank Cap (96), Vapor Canister Purge Valve (53), Vapor Canister Purge Solenoid (47)</td>
+    </tr>
+    <tr>
+      <td>P0303</td>
+      <td>219</td>
+      <td>Ignition Coil (171), Spark Plug (164), Fuel Injector (58)</td>
+    </tr>
+    <tr>
+      <td>P0442</td>
+      <td>187</td>
+      <td>Fuel Tank Cap (63), Vapor Canister Purge Valve (61), Vapor Canister Vent Solenoid (45)</td>
+    </tr>
+  </tbody>
+</table></div><div class='table-block'><div class='table-head'><h3>Top 10 ABS part names</h3><button class='btn' onclick="downloadTable('abs_parts')">Download CSV</button></div><table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>ABS Part Name</th>
+      <th>Mentions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ABS Wheel Speed Sensor</td>
+      <td>656</td>
+    </tr>
+    <tr>
+      <td>Vehicle Battery</td>
+      <td>252</td>
+    </tr>
+    <tr>
+      <td>ABS Control Module</td>
+      <td>231</td>
+    </tr>
+    <tr>
+      <td>ABS Modulator</td>
+      <td>122</td>
+    </tr>
+    <tr>
+      <td>Electronic Brake Control Module</td>
+      <td>113</td>
+    </tr>
+    <tr>
+      <td>Steering Angle Sensor</td>
+      <td>111</td>
+    </tr>
+    <tr>
+      <td>Suspension Yaw Sensor</td>
+      <td>109</td>
+    </tr>
+    <tr>
+      <td>Wheel Bearing and Hub Assembly</td>
+      <td>73</td>
+    </tr>
+    <tr>
+      <td>Engine Control Module</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <td>Brake Light Switch</td>
+      <td>60</td>
+    </tr>
+  </tbody>
+</table></div><div class='table-block'><div class='table-head'><h3>Top 10 SRS part names</h3><button class='btn' onclick="downloadTable('srs_parts')">Download CSV</button></div><table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>SRS Part Name</th>
+      <th>Mentions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Vehicle Battery</td>
+      <td>92</td>
+    </tr>
+    <tr>
+      <td>Engine Wiring Harness Connector</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>Air Bag Clockspring</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>Air Bag Impact Sensor</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <td>Seat Belt</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <td>Occupant Detection Sensor</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <td>Air Bag Control Module</td>
+      <td>44</td>
+    </tr>
+    <tr>
+      <td>Air Bag Module</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>Steering Column Control Module</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Instrument Cluster</td>
+      <td>15</td>
+    </tr>
+  </tbody>
+</table></div>
+  </div>
+  <div class="charts">
+    <div class="chart">
+      <div class="chart-head">
+        <span>Scans in the last 24 hours (UTC)</span>
+        <button class="btn" onclick="downloadChart('hourly-chart','hourly_scans')">Download PNG</button>
+      </div>
+      <div id="hourly-chart"></div>
+    </div>
+    <div class="chart">
+      <div class="chart-head">
+        <span>Scans by state</span>
+        <button class="btn" onclick="downloadChart('state-map','state_map')">Download PNG</button>
+      </div>
+      <div id="state-map"></div>
+    </div>
+    <div class="chart">
+      <div class="chart-head">
+        <span>Repeat users by state</span>
+        <button class="btn" onclick="downloadChart('repeat-map','repeat_user_map')">Download PNG</button>
+      </div>
+      <div id="repeat-map"></div>
+    </div>
+    <div class="chart">
+      <div class="chart-head">
+        <span>Top states by scans</span>
+        <button class="btn" onclick="downloadChart('state-bar','top_states')">Download PNG</button>
+      </div>
+      <div id="state-bar"></div>
+    </div>
+    <div class="chart">
+      <div class="chart-head">
+        <span>Top vehicles by scans</span>
+        <button class="btn" onclick="downloadChart('vehicle-bar','top_vehicles')">Download PNG</button>
+      </div>
+      <div id="vehicle-bar"></div>
+    </div>
+  </div>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script>
+    const chartData = {"hourly": [{"Hour": "2025-09-01T00:00:00+00:00", "Scans": 1510}, {"Hour": "2025-09-01T01:00:00+00:00", "Scans": 1165}, {"Hour": "2025-09-01T02:00:00+00:00", "Scans": 936}, {"Hour": "2025-09-01T03:00:00+00:00", "Scans": 618}, {"Hour": "2025-09-01T04:00:00+00:00", "Scans": 414}, {"Hour": "2025-09-01T05:00:00+00:00", "Scans": 293}, {"Hour": "2025-09-01T06:00:00+00:00", "Scans": 159}, {"Hour": "2025-09-01T07:00:00+00:00", "Scans": 114}, {"Hour": "2025-09-01T08:00:00+00:00", "Scans": 95}, {"Hour": "2025-09-01T09:00:00+00:00", "Scans": 88}, {"Hour": "2025-09-01T10:00:00+00:00", "Scans": 129}, {"Hour": "2025-09-01T11:00:00+00:00", "Scans": 197}, {"Hour": "2025-09-01T12:00:00+00:00", "Scans": 357}, {"Hour": "2025-09-01T13:00:00+00:00", "Scans": 658}, {"Hour": "2025-09-01T14:00:00+00:00", "Scans": 1138}, {"Hour": "2025-09-01T15:00:00+00:00", "Scans": 1434}, {"Hour": "2025-09-01T16:00:00+00:00", "Scans": 1787}, {"Hour": "2025-09-01T17:00:00+00:00", "Scans": 1933}, {"Hour": "2025-09-01T18:00:00+00:00", "Scans": 1977}, {"Hour": "2025-09-01T19:00:00+00:00", "Scans": 2070}, {"Hour": "2025-09-01T20:00:00+00:00", "Scans": 2049}, {"Hour": "2025-09-01T21:00:00+00:00", "Scans": 2070}, {"Hour": "2025-09-01T22:00:00+00:00", "Scans": 2076}, {"Hour": "2025-09-01T23:00:00+00:00", "Scans": 1954}], "scans_by_state": [{"State": "TX", "Scans": 2633}, {"State": "CA", "Scans": 2223}, {"State": "FL", "Scans": 1526}, {"State": "GA", "Scans": 934}, {"State": "NC", "Scans": 882}, {"State": "NY", "Scans": 781}, {"State": "IL", "Scans": 774}, {"State": "PA", "Scans": 773}, {"State": "OH", "Scans": 713}, {"State": "VA", "Scans": 641}, {"State": "TN", "Scans": 640}, {"State": "MI", "Scans": 599}, {"State": "IN", "Scans": 591}, {"State": "MO", "Scans": 574}, {"State": "WA", "Scans": 524}, {"State": "AZ", "Scans": 486}, {"State": "AL", "Scans": 484}, {"State": "SC", "Scans": 454}, {"State": "CO", "Scans": 450}, {"State": "KY", "Scans": 447}, {"State": "LA", "Scans": 430}, {"State": "OK", "Scans": 428}, {"State": "NJ", "Scans": 410}, {"State": "MS", "Scans": 400}, {"State": "WI", "Scans": 381}, {"State": "AR", "Scans": 379}, {"State": "MN", "Scans": 326}, {"State": "MD", "Scans": 312}, {"State": "MA", "Scans": 302}, {"State": "UT", "Scans": 281}, {"State": "OR", "Scans": 274}, {"State": "IA", "Scans": 262}, {"State": "KS", "Scans": 234}, {"State": "NV", "Scans": 217}, {"State": "CT", "Scans": 203}, {"State": "NM", "Scans": 201}, {"State": "NE", "Scans": 197}, {"State": "WV", "Scans": 162}, {"State": "ID", "Scans": 153}, {"State": "NH", "Scans": 113}, {"State": "MT", "Scans": 107}, {"State": "HI", "Scans": 97}, {"State": "PR", "Scans": 96}, {"State": "ME", "Scans": 94}, {"State": "DE", "Scans": 78}, {"State": "SD", "Scans": 74}, {"State": "ND", "Scans": 67}, {"State": "RI", "Scans": 66}, {"State": "AK", "Scans": 52}, {"State": "WY", "Scans": 36}, {"State": "VT", "Scans": 31}, {"State": "DC", "Scans": 13}, {"State": "GU", "Scans": 11}, {"State": "AP", "Scans": 1}], "repeat_users_by_state": [{"State": "AK", "RepeatUsers": 13}, {"State": "AL", "RepeatUsers": 115}, {"State": "AR", "RepeatUsers": 82}, {"State": "AZ", "RepeatUsers": 107}, {"State": "CA", "RepeatUsers": 474}, {"State": "CO", "RepeatUsers": 99}, {"State": "CT", "RepeatUsers": 46}, {"State": "DC", "RepeatUsers": 3}, {"State": "DE", "RepeatUsers": 19}, {"State": "FL", "RepeatUsers": 317}, {"State": "GA", "RepeatUsers": 191}, {"State": "GU", "RepeatUsers": 2}, {"State": "HI", "RepeatUsers": 14}, {"State": "IA", "RepeatUsers": 59}, {"State": "ID", "RepeatUsers": 34}, {"State": "IL", "RepeatUsers": 172}, {"State": "IN", "RepeatUsers": 127}, {"State": "KS", "RepeatUsers": 48}, {"State": "KY", "RepeatUsers": 97}, {"State": "LA", "RepeatUsers": 104}, {"State": "MA", "RepeatUsers": 64}, {"State": "MD", "RepeatUsers": 57}, {"State": "ME", "RepeatUsers": 19}, {"State": "MI", "RepeatUsers": 128}, {"State": "MN", "RepeatUsers": 68}, {"State": "MO", "RepeatUsers": 116}, {"State": "MS", "RepeatUsers": 88}, {"State": "MT", "RepeatUsers": 21}, {"State": "NC", "RepeatUsers": 181}, {"State": "ND", "RepeatUsers": 15}, {"State": "NE", "RepeatUsers": 43}, {"State": "NH", "RepeatUsers": 25}, {"State": "NJ", "RepeatUsers": 85}, {"State": "NM", "RepeatUsers": 45}, {"State": "NV", "RepeatUsers": 50}, {"State": "NY", "RepeatUsers": 154}, {"State": "OH", "RepeatUsers": 169}, {"State": "OK", "RepeatUsers": 89}, {"State": "OR", "RepeatUsers": 54}, {"State": "PA", "RepeatUsers": 162}, {"State": "PR", "RepeatUsers": 26}, {"State": "RI", "RepeatUsers": 16}, {"State": "SC", "RepeatUsers": 95}, {"State": "SD", "RepeatUsers": 14}, {"State": "TN", "RepeatUsers": 153}, {"State": "TX", "RepeatUsers": 578}, {"State": "UT", "RepeatUsers": 56}, {"State": "VA", "RepeatUsers": 138}, {"State": "VT", "RepeatUsers": 6}, {"State": "WA", "RepeatUsers": 112}, {"State": "WI", "RepeatUsers": 92}, {"State": "WV", "RepeatUsers": 31}, {"State": "WY", "RepeatUsers": 9}], "top_states": [{"State": "TX", "Scans": 2633}, {"State": "CA", "Scans": 2223}, {"State": "FL", "Scans": 1526}, {"State": "GA", "Scans": 934}, {"State": "NC", "Scans": 882}, {"State": "NY", "Scans": 781}, {"State": "IL", "Scans": 774}, {"State": "PA", "Scans": 773}, {"State": "OH", "Scans": 713}, {"State": "VA", "Scans": 641}], "top_vehicles": [{"Vehicle": "2013 FORD F150", "Scans": 111}, {"Vehicle": "2007 CHEVROLET SILVERADO", "Scans": 93}, {"Vehicle": "2010 FORD F150", "Scans": 91}, {"Vehicle": "2003 CHEVROLET SILVERADO", "Scans": 86}, {"Vehicle": "2013 CHEVROLET SILVERADO", "Scans": 85}, {"Vehicle": "2017 CHEVROLET SILVERADO", "Scans": 84}, {"Vehicle": "2005 FORD F150", "Scans": 81}, {"Vehicle": "2014 CHEVROLET SILVERADO", "Scans": 81}, {"Vehicle": "2016 RAM 1500", "Scans": 77}, {"Vehicle": "2008 CHEVROLET SILVERADO", "Scans": 75}], "top_usb": [{"UsbProductId": 796, "Scans": 11105}, {"UsbProductId": 942, "Scans": 3032}, {"UsbProductId": 795, "Scans": 2440}, {"UsbProductId": 932, "Scans": 1130}, {"UsbProductId": 937, "Scans": 984}], "mil_dtc": [{"MIL DTC": "P0420", "Scans": 860, "Top Parts": "Catalytic Converter (601), Catalytic Converter with Integrated Exhaust Manifold (168), Exhaust Manifold Gasket (110)"}, {"MIL DTC": "P0300", "Scans": 525, "Top Parts": "Spark Plug (282), Ignition Coil (188), Fuel System Cleaner (145)"}, {"MIL DTC": "P0171", "Scans": 439, "Top Parts": "Mass Air Flow Sensor (292), Engine Intake Manifold Gasket (89), PCV Valve (63)"}, {"MIL DTC": "P0456", "Scans": 293, "Top Parts": "Fuel Tank Cap (142), Evaporative System Integrity Module (ESIM) (124), Vapor Canister Purge Valve (62)"}, {"MIL DTC": "P0430", "Scans": 284, "Top Parts": "Catalytic Converter (217), Oxygen Sensor (65), Catalytic Converter with Integrated Exhaust Manifold (63)"}, {"MIL DTC": "P0301", "Scans": 274, "Top Parts": "Spark Plug (248), Ignition Coil (222), Fuel Injector (53)"}, {"MIL DTC": "P0302", "Scans": 265, "Top Parts": "Ignition Coil (208), Spark Plug (204), Fuel Injector (35)"}, {"MIL DTC": "P0455", "Scans": 235, "Top Parts": "Fuel Tank Cap (96), Vapor Canister Purge Valve (53), Vapor Canister Purge Solenoid (47)"}, {"MIL DTC": "P0303", "Scans": 219, "Top Parts": "Ignition Coil (171), Spark Plug (164), Fuel Injector (58)"}, {"MIL DTC": "P0442", "Scans": 187, "Top Parts": "Fuel Tank Cap (63), Vapor Canister Purge Valve (61), Vapor Canister Vent Solenoid (45)"}], "abs_parts": [{"ABS Part Name": "ABS Wheel Speed Sensor", "Mentions": 656}, {"ABS Part Name": "Vehicle Battery", "Mentions": 252}, {"ABS Part Name": "ABS Control Module", "Mentions": 231}, {"ABS Part Name": "ABS Modulator", "Mentions": 122}, {"ABS Part Name": "Electronic Brake Control Module", "Mentions": 113}, {"ABS Part Name": "Steering Angle Sensor", "Mentions": 111}, {"ABS Part Name": "Suspension Yaw Sensor", "Mentions": 109}, {"ABS Part Name": "Wheel Bearing and Hub Assembly", "Mentions": 73}, {"ABS Part Name": "Engine Control Module", "Mentions": 61}, {"ABS Part Name": "Brake Light Switch", "Mentions": 60}], "srs_parts": [{"SRS Part Name": "Vehicle Battery", "Mentions": 92}, {"SRS Part Name": "Engine Wiring Harness Connector", "Mentions": 88}, {"SRS Part Name": "Air Bag Clockspring", "Mentions": 72}, {"SRS Part Name": "Air Bag Impact Sensor", "Mentions": 67}, {"SRS Part Name": "Seat Belt", "Mentions": 50}, {"SRS Part Name": "Occupant Detection Sensor", "Mentions": 45}, {"SRS Part Name": "Air Bag Control Module", "Mentions": 44}, {"SRS Part Name": "Air Bag Module", "Mentions": 26}, {"SRS Part Name": "Steering Column Control Module", "Mentions": 20}, {"SRS Part Name": "Instrument Cluster", "Mentions": 15}]};
+
+    function themeColors() {
+      const styles = getComputedStyle(document.body);
+      return {
+        bg: styles.getPropertyValue('--card-bg').trim(),
+        plot: styles.getPropertyValue('--plot-bg').trim(),
+        text: styles.getPropertyValue('--text').trim(),
+        grid: styles.getPropertyValue('--grid').trim(),
+        accent1: styles.getPropertyValue('--accent-1').trim(),
+        accent2: styles.getPropertyValue('--accent-2').trim(),
+        accent3: styles.getPropertyValue('--accent-3').trim(),
+      };
+    }
+
+    function renderHourly(colors) {
+      const data = chartData.hourly || [];
+      if (!data.length) return;
+      const x = data.map(d => d.Hour);
+      const y = data.map(d => d.Scans);
+      Plotly.react('hourly-chart', [{
+        x, y, type: 'scatter', mode: 'lines+markers', line: {color: colors.accent1}
+      }], {
+        title: 'Scans in the last 24 hours (UTC, by hour)',
+        paper_bgcolor: colors.bg,
+        plot_bgcolor: colors.plot,
+        font: {color: colors.text},
+        xaxis: {gridcolor: colors.grid},
+        yaxis: {gridcolor: colors.grid},
+        margin: {t: 40, l: 40, r: 20, b: 60}
+      });
+    }
+
+    function renderStateMap(colors) {
+      const data = chartData.scans_by_state || [];
+      if (!data.length) return;
+      Plotly.react('state-map', [{
+        type: 'choropleth',
+        locationmode: 'USA-states',
+        locations: data.map(d => d.State),
+        z: data.map(d => d.Scans),
+        colorscale: 'Blues',
+        colorbar: {title: 'Scans'}
+      }], {
+        title: 'Scans by state',
+        paper_bgcolor: colors.bg,
+        plot_bgcolor: colors.plot,
+        font: {color: colors.text},
+        geo: {scope: 'usa', bgcolor: colors.plot},
+        margin: {t: 40, l: 20, r: 20, b: 20}
+      });
+    }
+
+    function renderRepeatMap(colors) {
+      const data = chartData.repeat_users_by_state || [];
+      if (!data.length) return;
+      Plotly.react('repeat-map', [{
+        type: 'choropleth',
+        locationmode: 'USA-states',
+        locations: data.map(d => d.State),
+        z: data.map(d => d.RepeatUsers),
+        colorscale: 'Greens',
+        colorbar: {title: 'Repeat users'}
+      }], {
+        title: 'Repeat users by state',
+        paper_bgcolor: colors.bg,
+        plot_bgcolor: colors.plot,
+        font: {color: colors.text},
+        geo: {scope: 'usa', bgcolor: colors.plot},
+        margin: {t: 40, l: 20, r: 20, b: 20}
+      });
+    }
+
+    function renderStateBar(colors) {
+      const data = chartData.top_states || [];
+      if (!data.length) return;
+      Plotly.react('state-bar', [{
+        type: 'bar',
+        x: data.map(d => d.State),
+        y: data.map(d => d.Scans),
+        marker: {color: colors.accent1}
+      }], {
+        title: 'Top states by scans',
+        paper_bgcolor: colors.bg,
+        plot_bgcolor: colors.plot,
+        font: {color: colors.text},
+        xaxis: {gridcolor: colors.grid},
+        yaxis: {gridcolor: colors.grid},
+        margin: {t: 40, l: 40, r: 20, b: 80}
+      });
+    }
+
+    function renderVehicleBar(colors) {
+      const data = chartData.top_vehicles || [];
+      if (!data.length) return;
+      Plotly.react('vehicle-bar', [{
+        type: 'bar',
+        x: data.map(d => d.Vehicle),
+        y: data.map(d => d.Scans),
+        marker: {color: colors.accent2}
+      }], {
+        title: 'Top vehicles by scans',
+        paper_bgcolor: colors.bg,
+        plot_bgcolor: colors.plot,
+        font: {color: colors.text},
+        xaxis: {tickangle: -40, gridcolor: colors.grid},
+        yaxis: {gridcolor: colors.grid},
+        margin: {t: 40, l: 40, r: 20, b: 120}
+      });
+    }
+
+    function renderCharts() {
+      const colors = themeColors();
+      renderHourly(colors);
+      renderStateMap(colors);
+      renderRepeatMap(colors);
+      renderStateBar(colors);
+      renderVehicleBar(colors);
+    }
+
+    const toggle = document.getElementById('theme-toggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('rs2Theme');
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+    function setTheme(theme) {
+      document.body.classList.toggle('dark', theme === 'dark');
+      document.body.classList.toggle('light', theme === 'light');
+      toggle.textContent = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+      localStorage.setItem('rs2Theme', theme);
+      renderCharts();
+    }
+
+    function downloadChart(id, filename) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      Plotly.downloadImage(el, {
+        format: 'png',
+        filename,
+        height: 600,
+        width: 900,
+      });
+    }
+
+    function toCsv(rows) {
+      if (!rows || !rows.length) return '';
+      const headers = Object.keys(rows[0]);
+      const escape = (val) => {
+        if (val === null || val === undefined) return '';
+        const s = String(val);
+        if (/[",\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+        return s;
+      };
+      const lines = [headers.join(',')];
+      rows.forEach((row) => {
+        lines.push(headers.map(h => escape(row[h])).join(','));
+      });
+      return lines.join('\n');
+    }
+
+    function downloadTable(key) {
+      const data = chartData[key];
+      if (!data || !data.length) return;
+      const csv = toCsv(data);
+      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${key}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    toggle.addEventListener('click', () => {
+      const next = document.body.classList.contains('dark') ? 'light' : 'dark';
+      setTheme(next);
+    });
+
+    setTheme(initialTheme);
+  </script>
+</body>
+</html>
