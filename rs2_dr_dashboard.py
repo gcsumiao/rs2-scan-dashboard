@@ -31,14 +31,8 @@ def load_data(csv_path: Path) -> pd.DataFrame:
     for col in ["Year", "Mileage", "TotalAbsCodes", "TotalSrsCodes"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    # Stable user identifier: AccountId fallback to Email then Phone.
-    df["UserId"] = (
-        df["AccountId"]
-        .fillna(df["Email"])
-        .fillna(df["Phone"])
-        .astype(str)
-        .str.strip()
-    )
+    # Stable user identifier: AccountId only for user-based metrics.
+    df["UserId"] = df["AccountId"].astype(str).str.strip()
     df.loc[df["UserId"].isin(["", "nan"]), "UserId"] = pd.NA
 
     df["VehicleAge"] = 2026 - df["Year"]
@@ -102,18 +96,32 @@ def summarize(df: pd.DataFrame) -> Dict[str, object]:
     maintenance_parts_total = int(df["MaintenancePartsCount"].sum())
     predicted_parts_total = int(df["PredictedPartsCount"].sum())
     unique_vins = int(df["VIN"].dropna().nunique())
-    unique_states = int(df["State"].dropna().nunique())
 
     user_counts = df["UserId"].dropna().value_counts()
-    repeat_users = user_counts[user_counts > 1]
-    repeat_user_count = int(repeat_users.size)
-    repeat_user_share = repeat_user_count / user_counts.size if user_counts.size else 0
+    total_scanned_users = int(user_counts.size)
+
+    # Repeat users: AccountId that scanned the same VIN 2+ times.
+    repeat_pairs = (
+        df.dropna(subset=["UserId", "VIN"])
+        .groupby(["UserId", "VIN"])
+        .size()
+        .reset_index(name="cnt")
+    )
+    repeat_accounts = repeat_pairs[repeat_pairs["cnt"] >= 2]["UserId"].unique()
+    repeat_user_count = int(len(repeat_accounts))
+    repeat_user_share = repeat_user_count / total_scanned_users if total_scanned_users else 0
 
     cards: List[Metric] = [
         {
             "label": "Total scans",
             "value": total_scans,
             "description": "All scan events in the dataset.",
+            "kind": "count",
+        },
+        {
+            "label": "Total scanned users",
+            "value": total_scanned_users,
+            "description": "Distinct AccountId values with at least one scan.",
             "kind": "count",
         },
         {
@@ -159,21 +167,15 @@ def summarize(df: pd.DataFrame) -> Dict[str, object]:
             "kind": "count",
         },
         {
-            "label": "States covered",
-            "value": unique_states,
-            "description": "States with at least one scan.",
-            "kind": "count",
-        },
-        {
             "label": "Repeat users",
             "value": repeat_user_count,
-            "description": "Users with more than one scan.",
+            "description": "AccountId values that scanned the same VIN at least twice.",
             "kind": "count",
         },
         {
             "label": "Repeat user share",
             "value": repeat_user_share,
-            "description": "Share of users that are repeat users.",
+            "description": "Share of scanned users who repeated on the same VIN.",
             "kind": "percent",
         },
     ]
@@ -228,7 +230,7 @@ def summarize(df: pd.DataFrame) -> Dict[str, object]:
         hourly = pd.DataFrame(columns=["Hour", "Scans"])
 
     repeat_users_by_state = (
-        df[df["UserId"].isin(repeat_users.index)]
+        df[df["UserId"].isin(repeat_accounts)]
         .dropna(subset=["State"])
         .groupby("State")["UserId"]
         .nunique()
