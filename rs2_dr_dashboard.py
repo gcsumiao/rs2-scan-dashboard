@@ -568,7 +568,10 @@ def render_html(
         locationmode: 'USA-states',
         locations: data.map(d => d.State),
         z: data.map(d => d.Scans),
-        colorscale: 'Blues',
+        colorscale: [
+          [0, '#e0f2fe'],
+          [1, '#1d4ed8']
+        ],
         colorbar: {{title: 'Scans'}}
       }}], {{
         title: 'Scans by state',
@@ -588,7 +591,10 @@ def render_html(
         locationmode: 'USA-states',
         locations: data.map(d => d.State),
         z: data.map(d => d.RepeatUsers),
-        colorscale: 'Greens',
+        colorscale: [
+          [0, '#dcfce7'],
+          [1, '#166534']
+        ],
         colorbar: {{title: 'Repeat users'}}
       }}], {{
         title: 'Repeat users by state',
