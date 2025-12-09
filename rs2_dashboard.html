@@ -207,10 +207,15 @@
             <div class="label">Repeat users (>=2 scans within 1 hour)</div>
             <div class="value">4,550</div>
         </div>
+        
+        <div class="card">
+            <div class="label">Unique VIN-user pairs</div>
+            <div class="value">15,191</div>
+        </div>
         </div>
   <div class="notes">
     <strong>Metric definitions</strong>
-    <ul><li><strong>Total scans:</strong> All scan events in the dataset.</li><li><strong>Total scanned users:</strong> Distinct AccountId values with at least one scan.</li><li><strong>Average vehicle age:</strong> Mean of (2026 - Year) for valid years.</li><li><strong>Average mileage:</strong> Mean of mileage across scans.</li><li><strong>Average ABS code count:</strong> Mean of TotalAbsCodes where present.</li><li><strong>Average SRS code count:</strong> Mean of TotalSrsCodes where present.</li><li><strong>Maintenance parts (total):</strong> Sum of MaintenancePartsCount.</li><li><strong>Predicted parts (total):</strong> Sum of PredictedPartsCount.</li><li><strong>Unique VINs:</strong> Distinct VINs scanned.</li><li><strong>Repeat users:</strong> AccountId values that scanned the same VIN at least twice.</li><li><strong>Repeat user share:</strong> Share of scanned users who repeated on the same VIN.</li><li><strong>Repeat users (>=2 scans within 1 hour):</strong> Repeat users who had at least two scans (any VIN) within a 1-hour window.</li></ul>
+    <ul><li><strong>Total scans:</strong> All scan events in the dataset.</li><li><strong>Total scanned users:</strong> Distinct AccountId values with at least one scan.</li><li><strong>Average vehicle age:</strong> Mean of (2026 - Year) for valid years.</li><li><strong>Average mileage:</strong> Mean of mileage across scans.</li><li><strong>Average ABS code count:</strong> Mean of TotalAbsCodes where present.</li><li><strong>Average SRS code count:</strong> Mean of TotalSrsCodes where present.</li><li><strong>Maintenance parts (total):</strong> Sum of MaintenancePartsCount.</li><li><strong>Predicted parts (total):</strong> Sum of PredictedPartsCount.</li><li><strong>Unique VINs:</strong> Distinct VINs scanned.</li><li><strong>Repeat users:</strong> AccountId values that scanned the same VIN at least twice.</li><li><strong>Repeat user share:</strong> Share of scanned users who repeated on the same VIN.</li><li><strong>Repeat users (>=2 scans within 1 hour):</strong> Repeat users who had at least two scans (any VIN) within a 1-hour window.</li><li><strong>Unique VIN-user pairs:</strong> Distinct combinations of VIN and UserId (unique VINs scanned by unique users).</li></ul>
   </div>
   <div class="tables">
     <div class='table-block'><div class='table-head'><h3>Top 10 vehicles (Year, Make, Model)</h3><button class='btn' onclick="downloadTable('top_vehicles')">Download CSV</button></div><table border="1" class="dataframe data-table">
