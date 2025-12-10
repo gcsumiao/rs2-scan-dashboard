@@ -140,6 +140,54 @@
     }
     .notes ul { margin: 6px 0 0 16px; padding: 0; }
     .notes li { margin-bottom: 4px; line-height: 1.5; }
+    .vin-block {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+      margin: 18px 0;
+    }
+    .vin-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .vin-head h3 { margin: 0; }
+    .vin-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .vin-controls label { font-size: 13px; color: var(--text); font-weight: 700; letter-spacing: 0.2px; }
+    .vin-controls select {
+      background: linear-gradient(135deg, var(--plot-bg), var(--card-bg));
+      color: var(--text);
+      border: 2px solid var(--accent-1);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+    }
+    .vin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .stat-card {
+      background: var(--plot-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .stat-card .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-card .value { font-size: 18px; font-weight: 700; }
   </style>
 </head>
 <body class="dark">
@@ -216,6 +264,33 @@
   <div class="notes">
     <strong>Metric definitions</strong>
     <ul><li><strong>Total scans:</strong> All scan events in the dataset.</li><li><strong>Total scanned users:</strong> Distinct AccountId values with at least one scan.</li><li><strong>Average vehicle age:</strong> Mean of (2026 - Year) for valid years.</li><li><strong>Average mileage:</strong> Mean of mileage across scans.</li><li><strong>Average ABS code count:</strong> Mean of TotalAbsCodes where present.</li><li><strong>Average SRS code count:</strong> Mean of TotalSrsCodes where present.</li><li><strong>Maintenance parts (total):</strong> Sum of MaintenancePartsCount.</li><li><strong>Predicted parts (total):</strong> Sum of PredictedPartsCount.</li><li><strong>Unique VINs:</strong> Distinct VINs scanned.</li><li><strong>Repeat users:</strong> AccountId values that scanned the same VIN at least twice.</li><li><strong>Repeat user share:</strong> Share of scanned users who repeated on the same VIN.</li><li><strong>Repeat users (>=2 scans within 1 hour):</strong> Repeat users who had at least two scans (any VIN) within a 1-hour window.</li><li><strong>Unique VIN-user pairs:</strong> Distinct combinations of VIN and UserId (unique VINs scanned by unique users).</li></ul>
+  </div>
+  <div class="vin-block">
+    <div class="vin-head">
+      <div>
+        <h3>VIN scan frequency</h3>
+        <div class="muted">Share of the 15,143 unique VINs by number of scans.</div>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn" onclick="downloadTable('vin_distribution')">Download CSV</button>
+        <button class="btn" onclick="downloadChart('vin-chart','vin_scan_distribution')">Download PNG</button>
+      </div>
+    </div>
+    <div class="vin-controls">
+      <label for="vin-select">Select scan count:</label>
+      <select id="vin-select"></select>
+    </div>
+    <div class="vin-stats">
+      <div class="stat-card">
+        <div class="label">VINs</div>
+        <div class="value" id="vin-count-value">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Share of unique VINs</div>
+        <div class="value" id="vin-percent-value">-</div>
+      </div>
+    </div>
+    <div id="vin-chart"></div>
   </div>
   <div class="tables">
     <div class='table-block'><div class='table-head'><h3>Top 10 vehicles (Year, Make, Model)</h3><button class='btn' onclick="downloadTable('top_vehicles')">Download CSV</button></div><table border="1" class="dataframe data-table">
@@ -495,7 +570,7 @@
   </div>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script>
-    const chartData = {"hourly": [{"Hour": "2025-08-31T17:00:00-07:00", "Scans": 1510}, {"Hour": "2025-08-31T18:00:00-07:00", "Scans": 1165}, {"Hour": "2025-08-31T19:00:00-07:00", "Scans": 936}, {"Hour": "2025-08-31T20:00:00-07:00", "Scans": 618}, {"Hour": "2025-08-31T21:00:00-07:00", "Scans": 414}, {"Hour": "2025-08-31T22:00:00-07:00", "Scans": 293}, {"Hour": "2025-08-31T23:00:00-07:00", "Scans": 159}, {"Hour": "2025-09-01T00:00:00-07:00", "Scans": 114}, {"Hour": "2025-09-01T01:00:00-07:00", "Scans": 95}, {"Hour": "2025-09-01T02:00:00-07:00", "Scans": 88}, {"Hour": "2025-09-01T03:00:00-07:00", "Scans": 129}, {"Hour": "2025-09-01T04:00:00-07:00", "Scans": 197}, {"Hour": "2025-09-01T05:00:00-07:00", "Scans": 357}, {"Hour": "2025-09-01T06:00:00-07:00", "Scans": 658}, {"Hour": "2025-09-01T07:00:00-07:00", "Scans": 1138}, {"Hour": "2025-09-01T08:00:00-07:00", "Scans": 1434}, {"Hour": "2025-09-01T09:00:00-07:00", "Scans": 1787}, {"Hour": "2025-09-01T10:00:00-07:00", "Scans": 1933}, {"Hour": "2025-09-01T11:00:00-07:00", "Scans": 1977}, {"Hour": "2025-09-01T12:00:00-07:00", "Scans": 2070}, {"Hour": "2025-09-01T13:00:00-07:00", "Scans": 2049}, {"Hour": "2025-09-01T14:00:00-07:00", "Scans": 2070}, {"Hour": "2025-09-01T15:00:00-07:00", "Scans": 2076}, {"Hour": "2025-09-01T16:00:00-07:00", "Scans": 1954}], "scans_by_state": [{"State": "TX", "Scans": 2633}, {"State": "CA", "Scans": 2223}, {"State": "FL", "Scans": 1526}, {"State": "GA", "Scans": 934}, {"State": "NC", "Scans": 882}, {"State": "NY", "Scans": 781}, {"State": "IL", "Scans": 774}, {"State": "PA", "Scans": 773}, {"State": "OH", "Scans": 713}, {"State": "VA", "Scans": 641}, {"State": "TN", "Scans": 640}, {"State": "MI", "Scans": 599}, {"State": "IN", "Scans": 591}, {"State": "MO", "Scans": 574}, {"State": "WA", "Scans": 524}, {"State": "AZ", "Scans": 486}, {"State": "AL", "Scans": 484}, {"State": "SC", "Scans": 454}, {"State": "CO", "Scans": 450}, {"State": "KY", "Scans": 447}, {"State": "LA", "Scans": 430}, {"State": "OK", "Scans": 428}, {"State": "NJ", "Scans": 410}, {"State": "MS", "Scans": 400}, {"State": "WI", "Scans": 381}, {"State": "AR", "Scans": 379}, {"State": "MN", "Scans": 326}, {"State": "MD", "Scans": 312}, {"State": "MA", "Scans": 302}, {"State": "UT", "Scans": 281}, {"State": "OR", "Scans": 274}, {"State": "IA", "Scans": 262}, {"State": "KS", "Scans": 234}, {"State": "NV", "Scans": 217}, {"State": "CT", "Scans": 203}, {"State": "NM", "Scans": 201}, {"State": "NE", "Scans": 197}, {"State": "WV", "Scans": 162}, {"State": "ID", "Scans": 153}, {"State": "NH", "Scans": 113}, {"State": "MT", "Scans": 107}, {"State": "HI", "Scans": 97}, {"State": "PR", "Scans": 96}, {"State": "ME", "Scans": 94}, {"State": "DE", "Scans": 78}, {"State": "SD", "Scans": 74}, {"State": "ND", "Scans": 67}, {"State": "RI", "Scans": 66}, {"State": "AK", "Scans": 52}, {"State": "WY", "Scans": 36}, {"State": "VT", "Scans": 31}, {"State": "DC", "Scans": 13}, {"State": "GU", "Scans": 11}, {"State": "AP", "Scans": 1}], "repeat_users_by_state": [{"State": "AK", "RepeatUsers": 12}, {"State": "AL", "RepeatUsers": 107}, {"State": "AR", "RepeatUsers": 79}, {"State": "AZ", "RepeatUsers": 103}, {"State": "CA", "RepeatUsers": 447}, {"State": "CO", "RepeatUsers": 90}, {"State": "CT", "RepeatUsers": 40}, {"State": "DC", "RepeatUsers": 3}, {"State": "DE", "RepeatUsers": 19}, {"State": "FL", "RepeatUsers": 293}, {"State": "GA", "RepeatUsers": 178}, {"State": "GU", "RepeatUsers": 2}, {"State": "HI", "RepeatUsers": 11}, {"State": "IA", "RepeatUsers": 58}, {"State": "ID", "RepeatUsers": 32}, {"State": "IL", "RepeatUsers": 165}, {"State": "IN", "RepeatUsers": 120}, {"State": "KS", "RepeatUsers": 47}, {"State": "KY", "RepeatUsers": 94}, {"State": "LA", "RepeatUsers": 103}, {"State": "MA", "RepeatUsers": 58}, {"State": "MD", "RepeatUsers": 55}, {"State": "ME", "RepeatUsers": 19}, {"State": "MI", "RepeatUsers": 118}, {"State": "MN", "RepeatUsers": 65}, {"State": "MO", "RepeatUsers": 107}, {"State": "MS", "RepeatUsers": 81}, {"State": "MT", "RepeatUsers": 19}, {"State": "NC", "RepeatUsers": 170}, {"State": "ND", "RepeatUsers": 14}, {"State": "NE", "RepeatUsers": 42}, {"State": "NH", "RepeatUsers": 25}, {"State": "NJ", "RepeatUsers": 79}, {"State": "NM", "RepeatUsers": 44}, {"State": "NV", "RepeatUsers": 47}, {"State": "NY", "RepeatUsers": 145}, {"State": "OH", "RepeatUsers": 159}, {"State": "OK", "RepeatUsers": 85}, {"State": "OR", "RepeatUsers": 47}, {"State": "PA", "RepeatUsers": 150}, {"State": "PR", "RepeatUsers": 23}, {"State": "RI", "RepeatUsers": 16}, {"State": "SC", "RepeatUsers": 86}, {"State": "SD", "RepeatUsers": 12}, {"State": "TN", "RepeatUsers": 145}, {"State": "TX", "RepeatUsers": 536}, {"State": "UT", "RepeatUsers": 54}, {"State": "VA", "RepeatUsers": 124}, {"State": "VT", "RepeatUsers": 6}, {"State": "WA", "RepeatUsers": 102}, {"State": "WI", "RepeatUsers": 89}, {"State": "WV", "RepeatUsers": 25}, {"State": "WY", "RepeatUsers": 9}], "top_states": [{"State": "TX", "Scans": 2633}, {"State": "CA", "Scans": 2223}, {"State": "FL", "Scans": 1526}, {"State": "GA", "Scans": 934}, {"State": "NC", "Scans": 882}, {"State": "NY", "Scans": 781}, {"State": "IL", "Scans": 774}, {"State": "PA", "Scans": 773}, {"State": "OH", "Scans": 713}, {"State": "VA", "Scans": 641}], "top_vehicles": [{"Vehicle": "2013 FORD F150", "Scans": 111}, {"Vehicle": "2007 CHEVROLET SILVERADO", "Scans": 93}, {"Vehicle": "2010 FORD F150", "Scans": 91}, {"Vehicle": "2003 CHEVROLET SILVERADO", "Scans": 86}, {"Vehicle": "2013 CHEVROLET SILVERADO", "Scans": 85}, {"Vehicle": "2017 CHEVROLET SILVERADO", "Scans": 84}, {"Vehicle": "2005 FORD F150", "Scans": 81}, {"Vehicle": "2014 CHEVROLET SILVERADO", "Scans": 81}, {"Vehicle": "2016 RAM 1500", "Scans": 77}, {"Vehicle": "2008 CHEVROLET SILVERADO", "Scans": 75}], "top_usb": [{"UsbProductId": 796, "Scans": 11105}, {"UsbProductId": 942, "Scans": 3032}, {"UsbProductId": 795, "Scans": 2440}, {"UsbProductId": 932, "Scans": 1130}, {"UsbProductId": 937, "Scans": 984}], "mil_dtc": [{"MIL DTC": "P0420", "Scans": 860, "Top Parts": "Catalytic Converter (601), Catalytic Converter with Integrated Exhaust Manifold (168), Exhaust Manifold Gasket (110)"}, {"MIL DTC": "P0300", "Scans": 525, "Top Parts": "Spark Plug (282), Ignition Coil (188), Fuel System Cleaner (145)"}, {"MIL DTC": "P0171", "Scans": 439, "Top Parts": "Mass Air Flow Sensor (292), Engine Intake Manifold Gasket (89), PCV Valve (63)"}, {"MIL DTC": "P0456", "Scans": 293, "Top Parts": "Fuel Tank Cap (142), Evaporative System Integrity Module (ESIM) (124), Vapor Canister Purge Valve (62)"}, {"MIL DTC": "P0430", "Scans": 284, "Top Parts": "Catalytic Converter (217), Oxygen Sensor (65), Catalytic Converter with Integrated Exhaust Manifold (63)"}, {"MIL DTC": "P0301", "Scans": 274, "Top Parts": "Spark Plug (248), Ignition Coil (222), Fuel Injector (53)"}, {"MIL DTC": "P0302", "Scans": 265, "Top Parts": "Ignition Coil (208), Spark Plug (204), Fuel Injector (35)"}, {"MIL DTC": "P0455", "Scans": 235, "Top Parts": "Fuel Tank Cap (96), Vapor Canister Purge Valve (53), Vapor Canister Purge Solenoid (47)"}, {"MIL DTC": "P0303", "Scans": 219, "Top Parts": "Ignition Coil (171), Spark Plug (164), Fuel Injector (58)"}, {"MIL DTC": "P0442", "Scans": 187, "Top Parts": "Fuel Tank Cap (63), Vapor Canister Purge Valve (61), Vapor Canister Vent Solenoid (45)"}], "abs_parts": [{"ABS Part Name": "ABS Wheel Speed Sensor", "Mentions": 656}, {"ABS Part Name": "Vehicle Battery", "Mentions": 252}, {"ABS Part Name": "ABS Control Module", "Mentions": 231}, {"ABS Part Name": "ABS Modulator", "Mentions": 122}, {"ABS Part Name": "Electronic Brake Control Module", "Mentions": 113}, {"ABS Part Name": "Steering Angle Sensor", "Mentions": 111}, {"ABS Part Name": "Suspension Yaw Sensor", "Mentions": 109}, {"ABS Part Name": "Wheel Bearing and Hub Assembly", "Mentions": 73}, {"ABS Part Name": "Engine Control Module", "Mentions": 61}, {"ABS Part Name": "Brake Light Switch", "Mentions": 60}], "srs_parts": [{"SRS Part Name": "Vehicle Battery", "Mentions": 92}, {"SRS Part Name": "Engine Wiring Harness Connector", "Mentions": 88}, {"SRS Part Name": "Air Bag Clockspring", "Mentions": 72}, {"SRS Part Name": "Air Bag Impact Sensor", "Mentions": 67}, {"SRS Part Name": "Seat Belt", "Mentions": 50}, {"SRS Part Name": "Occupant Detection Sensor", "Mentions": 45}, {"SRS Part Name": "Air Bag Control Module", "Mentions": 44}, {"SRS Part Name": "Air Bag Module", "Mentions": 26}, {"SRS Part Name": "Steering Column Control Module", "Mentions": 20}, {"SRS Part Name": "Instrument Cluster", "Mentions": 15}]};
+    const chartData = {"hourly": [{"Hour": "2025-08-31T17:00:00-07:00", "Scans": 1510}, {"Hour": "2025-08-31T18:00:00-07:00", "Scans": 1165}, {"Hour": "2025-08-31T19:00:00-07:00", "Scans": 936}, {"Hour": "2025-08-31T20:00:00-07:00", "Scans": 618}, {"Hour": "2025-08-31T21:00:00-07:00", "Scans": 414}, {"Hour": "2025-08-31T22:00:00-07:00", "Scans": 293}, {"Hour": "2025-08-31T23:00:00-07:00", "Scans": 159}, {"Hour": "2025-09-01T00:00:00-07:00", "Scans": 114}, {"Hour": "2025-09-01T01:00:00-07:00", "Scans": 95}, {"Hour": "2025-09-01T02:00:00-07:00", "Scans": 88}, {"Hour": "2025-09-01T03:00:00-07:00", "Scans": 129}, {"Hour": "2025-09-01T04:00:00-07:00", "Scans": 197}, {"Hour": "2025-09-01T05:00:00-07:00", "Scans": 357}, {"Hour": "2025-09-01T06:00:00-07:00", "Scans": 658}, {"Hour": "2025-09-01T07:00:00-07:00", "Scans": 1138}, {"Hour": "2025-09-01T08:00:00-07:00", "Scans": 1434}, {"Hour": "2025-09-01T09:00:00-07:00", "Scans": 1787}, {"Hour": "2025-09-01T10:00:00-07:00", "Scans": 1933}, {"Hour": "2025-09-01T11:00:00-07:00", "Scans": 1977}, {"Hour": "2025-09-01T12:00:00-07:00", "Scans": 2070}, {"Hour": "2025-09-01T13:00:00-07:00", "Scans": 2049}, {"Hour": "2025-09-01T14:00:00-07:00", "Scans": 2070}, {"Hour": "2025-09-01T15:00:00-07:00", "Scans": 2076}, {"Hour": "2025-09-01T16:00:00-07:00", "Scans": 1954}], "scans_by_state": [{"State": "TX", "Scans": 2633}, {"State": "CA", "Scans": 2223}, {"State": "FL", "Scans": 1526}, {"State": "GA", "Scans": 934}, {"State": "NC", "Scans": 882}, {"State": "NY", "Scans": 781}, {"State": "IL", "Scans": 774}, {"State": "PA", "Scans": 773}, {"State": "OH", "Scans": 713}, {"State": "VA", "Scans": 641}, {"State": "TN", "Scans": 640}, {"State": "MI", "Scans": 599}, {"State": "IN", "Scans": 591}, {"State": "MO", "Scans": 574}, {"State": "WA", "Scans": 524}, {"State": "AZ", "Scans": 486}, {"State": "AL", "Scans": 484}, {"State": "SC", "Scans": 454}, {"State": "CO", "Scans": 450}, {"State": "KY", "Scans": 447}, {"State": "LA", "Scans": 430}, {"State": "OK", "Scans": 428}, {"State": "NJ", "Scans": 410}, {"State": "MS", "Scans": 400}, {"State": "WI", "Scans": 381}, {"State": "AR", "Scans": 379}, {"State": "MN", "Scans": 326}, {"State": "MD", "Scans": 312}, {"State": "MA", "Scans": 302}, {"State": "UT", "Scans": 281}, {"State": "OR", "Scans": 274}, {"State": "IA", "Scans": 262}, {"State": "KS", "Scans": 234}, {"State": "NV", "Scans": 217}, {"State": "CT", "Scans": 203}, {"State": "NM", "Scans": 201}, {"State": "NE", "Scans": 197}, {"State": "WV", "Scans": 162}, {"State": "ID", "Scans": 153}, {"State": "NH", "Scans": 113}, {"State": "MT", "Scans": 107}, {"State": "HI", "Scans": 97}, {"State": "PR", "Scans": 96}, {"State": "ME", "Scans": 94}, {"State": "DE", "Scans": 78}, {"State": "SD", "Scans": 74}, {"State": "ND", "Scans": 67}, {"State": "RI", "Scans": 66}, {"State": "AK", "Scans": 52}, {"State": "WY", "Scans": 36}, {"State": "VT", "Scans": 31}, {"State": "DC", "Scans": 13}, {"State": "GU", "Scans": 11}, {"State": "AP", "Scans": 1}], "repeat_users_by_state": [{"State": "AK", "RepeatUsers": 12}, {"State": "AL", "RepeatUsers": 107}, {"State": "AR", "RepeatUsers": 79}, {"State": "AZ", "RepeatUsers": 103}, {"State": "CA", "RepeatUsers": 447}, {"State": "CO", "RepeatUsers": 90}, {"State": "CT", "RepeatUsers": 40}, {"State": "DC", "RepeatUsers": 3}, {"State": "DE", "RepeatUsers": 19}, {"State": "FL", "RepeatUsers": 293}, {"State": "GA", "RepeatUsers": 178}, {"State": "GU", "RepeatUsers": 2}, {"State": "HI", "RepeatUsers": 11}, {"State": "IA", "RepeatUsers": 58}, {"State": "ID", "RepeatUsers": 32}, {"State": "IL", "RepeatUsers": 165}, {"State": "IN", "RepeatUsers": 120}, {"State": "KS", "RepeatUsers": 47}, {"State": "KY", "RepeatUsers": 94}, {"State": "LA", "RepeatUsers": 103}, {"State": "MA", "RepeatUsers": 58}, {"State": "MD", "RepeatUsers": 55}, {"State": "ME", "RepeatUsers": 19}, {"State": "MI", "RepeatUsers": 118}, {"State": "MN", "RepeatUsers": 65}, {"State": "MO", "RepeatUsers": 107}, {"State": "MS", "RepeatUsers": 81}, {"State": "MT", "RepeatUsers": 19}, {"State": "NC", "RepeatUsers": 170}, {"State": "ND", "RepeatUsers": 14}, {"State": "NE", "RepeatUsers": 42}, {"State": "NH", "RepeatUsers": 25}, {"State": "NJ", "RepeatUsers": 79}, {"State": "NM", "RepeatUsers": 44}, {"State": "NV", "RepeatUsers": 47}, {"State": "NY", "RepeatUsers": 145}, {"State": "OH", "RepeatUsers": 159}, {"State": "OK", "RepeatUsers": 85}, {"State": "OR", "RepeatUsers": 47}, {"State": "PA", "RepeatUsers": 150}, {"State": "PR", "RepeatUsers": 23}, {"State": "RI", "RepeatUsers": 16}, {"State": "SC", "RepeatUsers": 86}, {"State": "SD", "RepeatUsers": 12}, {"State": "TN", "RepeatUsers": 145}, {"State": "TX", "RepeatUsers": 536}, {"State": "UT", "RepeatUsers": 54}, {"State": "VA", "RepeatUsers": 124}, {"State": "VT", "RepeatUsers": 6}, {"State": "WA", "RepeatUsers": 102}, {"State": "WI", "RepeatUsers": 89}, {"State": "WV", "RepeatUsers": 25}, {"State": "WY", "RepeatUsers": 9}], "top_states": [{"State": "TX", "Scans": 2633}, {"State": "CA", "Scans": 2223}, {"State": "FL", "Scans": 1526}, {"State": "GA", "Scans": 934}, {"State": "NC", "Scans": 882}, {"State": "NY", "Scans": 781}, {"State": "IL", "Scans": 774}, {"State": "PA", "Scans": 773}, {"State": "OH", "Scans": 713}, {"State": "VA", "Scans": 641}], "top_vehicles": [{"Vehicle": "2013 FORD F150", "Scans": 111}, {"Vehicle": "2007 CHEVROLET SILVERADO", "Scans": 93}, {"Vehicle": "2010 FORD F150", "Scans": 91}, {"Vehicle": "2003 CHEVROLET SILVERADO", "Scans": 86}, {"Vehicle": "2013 CHEVROLET SILVERADO", "Scans": 85}, {"Vehicle": "2017 CHEVROLET SILVERADO", "Scans": 84}, {"Vehicle": "2005 FORD F150", "Scans": 81}, {"Vehicle": "2014 CHEVROLET SILVERADO", "Scans": 81}, {"Vehicle": "2016 RAM 1500", "Scans": 77}, {"Vehicle": "2008 CHEVROLET SILVERADO", "Scans": 75}], "top_usb": [{"UsbProductId": 796, "Scans": 11105}, {"UsbProductId": 942, "Scans": 3032}, {"UsbProductId": 795, "Scans": 2440}, {"UsbProductId": 932, "Scans": 1130}, {"UsbProductId": 937, "Scans": 984}], "mil_dtc": [{"MIL DTC": "P0420", "Scans": 860, "Top Parts": "Catalytic Converter (601), Catalytic Converter with Integrated Exhaust Manifold (168), Exhaust Manifold Gasket (110)"}, {"MIL DTC": "P0300", "Scans": 525, "Top Parts": "Spark Plug (282), Ignition Coil (188), Fuel System Cleaner (145)"}, {"MIL DTC": "P0171", "Scans": 439, "Top Parts": "Mass Air Flow Sensor (292), Engine Intake Manifold Gasket (89), PCV Valve (63)"}, {"MIL DTC": "P0456", "Scans": 293, "Top Parts": "Fuel Tank Cap (142), Evaporative System Integrity Module (ESIM) (124), Vapor Canister Purge Valve (62)"}, {"MIL DTC": "P0430", "Scans": 284, "Top Parts": "Catalytic Converter (217), Oxygen Sensor (65), Catalytic Converter with Integrated Exhaust Manifold (63)"}, {"MIL DTC": "P0301", "Scans": 274, "Top Parts": "Spark Plug (248), Ignition Coil (222), Fuel Injector (53)"}, {"MIL DTC": "P0302", "Scans": 265, "Top Parts": "Ignition Coil (208), Spark Plug (204), Fuel Injector (35)"}, {"MIL DTC": "P0455", "Scans": 235, "Top Parts": "Fuel Tank Cap (96), Vapor Canister Purge Valve (53), Vapor Canister Purge Solenoid (47)"}, {"MIL DTC": "P0303", "Scans": 219, "Top Parts": "Ignition Coil (171), Spark Plug (164), Fuel Injector (58)"}, {"MIL DTC": "P0442", "Scans": 187, "Top Parts": "Fuel Tank Cap (63), Vapor Canister Purge Valve (61), Vapor Canister Vent Solenoid (45)"}], "abs_parts": [{"ABS Part Name": "ABS Wheel Speed Sensor", "Mentions": 656}, {"ABS Part Name": "Vehicle Battery", "Mentions": 252}, {"ABS Part Name": "ABS Control Module", "Mentions": 231}, {"ABS Part Name": "ABS Modulator", "Mentions": 122}, {"ABS Part Name": "Electronic Brake Control Module", "Mentions": 113}, {"ABS Part Name": "Steering Angle Sensor", "Mentions": 111}, {"ABS Part Name": "Suspension Yaw Sensor", "Mentions": 109}, {"ABS Part Name": "Wheel Bearing and Hub Assembly", "Mentions": 73}, {"ABS Part Name": "Engine Control Module", "Mentions": 61}, {"ABS Part Name": "Brake Light Switch", "Mentions": 60}], "srs_parts": [{"SRS Part Name": "Vehicle Battery", "Mentions": 92}, {"SRS Part Name": "Engine Wiring Harness Connector", "Mentions": 88}, {"SRS Part Name": "Air Bag Clockspring", "Mentions": 72}, {"SRS Part Name": "Air Bag Impact Sensor", "Mentions": 67}, {"SRS Part Name": "Seat Belt", "Mentions": 50}, {"SRS Part Name": "Occupant Detection Sensor", "Mentions": 45}, {"SRS Part Name": "Air Bag Control Module", "Mentions": 44}, {"SRS Part Name": "Air Bag Module", "Mentions": 26}, {"SRS Part Name": "Steering Column Control Module", "Mentions": 20}, {"SRS Part Name": "Instrument Cluster", "Mentions": 15}], "vin_distribution": [{"scans": 1, "vins": 9932, "percent": 0.6558806048999538}, {"scans": 2, "vins": 3088, "percent": 0.2039226045037311}, {"scans": 3, "vins": 1103, "percent": 0.07283893548174074}, {"scans": 4, "vins": 452, "percent": 0.029848775011556496}, {"scans": 5, "vins": 233, "percent": 0.015386647295780228}, {"scans": 6, "vins": 115, "percent": 0.007594267978603976}, {"scans": 7, "vins": 69, "percent": 0.004556560787162385}, {"scans": 8, "vins": 44, "percent": 0.0029056329657267386}, {"scans": 9, "vins": 34, "percent": 0.00224526183715248}, {"scans": 10, "vins": 18, "percent": 0.0011886680314336657}, {"scans": 11, "vins": 20, "percent": 0.0013207422571485175}, {"scans": 12, "vins": 8, "percent": 0.000528296902859407}, {"scans": 13, "vins": 6, "percent": 0.0003962226771445552}, {"scans": 14, "vins": 3, "percent": 0.0001981113385722776}, {"scans": 15, "vins": 3, "percent": 0.0001981113385722776}, {"scans": 16, "vins": 4, "percent": 0.0002641484514297035}, {"scans": 17, "vins": 2, "percent": 0.00013207422571485174}, {"scans": 18, "vins": 1, "percent": 6.603711285742587e-05}, {"scans": 19, "vins": 1, "percent": 6.603711285742587e-05}, {"scans": 21, "vins": 1, "percent": 6.603711285742587e-05}, {"scans": 23, "vins": 2, "percent": 0.00013207422571485174}, {"scans": 24, "vins": 1, "percent": 6.603711285742587e-05}, {"scans": 26, "vins": 1, "percent": 6.603711285742587e-05}, {"scans": 27, "vins": 1, "percent": 6.603711285742587e-05}, {"scans": 60, "vins": 1, "percent": 6.603711285742587e-05}]};
 
     function themeColors() {
       const styles = getComputedStyle(document.body);
@@ -612,6 +687,61 @@
       });
     }
 
+    function renderVinDistribution(colors) {
+      const data = chartData.vin_distribution || [];
+      if (!data.length) return;
+      const x = data.map(d => d.scans);
+      const y = data.map(d => d.percent * 100);
+      const text = data.map(d => `${(d.percent * 100).toFixed(2)}% • ${d.vins.toLocaleString()} VINs`);
+      Plotly.react('vin-chart', [{
+        type: 'scatter',
+        mode: 'lines+markers',
+        x,
+        y,
+        text,
+        line: {color: colors.accent3, width: 3},
+        marker: {size: 6},
+        hovertemplate: '<b>%{x}x</b><br>%{text}<extra></extra>'
+      }], {
+        title: 'VINs by number of scans',
+        paper_bgcolor: colors.bg,
+        plot_bgcolor: colors.plot,
+        font: {color: colors.text},
+        xaxis: {title: 'Scans per VIN', gridcolor: colors.grid},
+        yaxis: {title: 'Share of unique VINs (%)', gridcolor: colors.grid},
+        margin: {t: 40, l: 60, r: 20, b: 60}
+      });
+    }
+
+    function setupVinControls() {
+      const select = document.getElementById('vin-select');
+      const data = chartData.vin_distribution || [];
+      if (!select || !data.length) return;
+      if (select.options.length === data.length) return; // already built
+      data.forEach((d) => {
+        const opt = document.createElement('option');
+        opt.value = d.scans;
+        opt.textContent = `${d.scans}x`;
+        select.appendChild(opt);
+      });
+      select.value = data[0].scans;
+      select.addEventListener('change', updateVinStats);
+      updateVinStats();
+    }
+
+    function updateVinStats() {
+      const data = chartData.vin_distribution || [];
+      const select = document.getElementById('vin-select');
+      if (!data.length || !select) return;
+      const rawValue = select.value || String(data[0].scans);
+      const selected = parseInt(rawValue, 10);
+      const found = data.find(d => d.scans === selected) || data[0];
+      const countEl = document.getElementById('vin-count-value');
+      const pctEl = document.getElementById('vin-percent-value');
+      if (countEl) countEl.textContent = found.vins.toLocaleString();
+      if (pctEl) pctEl.textContent = `${(found.percent * 100).toFixed(2)}%`;
+    }
+
     function renderCharts() {
       const colors = themeColors();
       renderHourly(colors);
@@ -619,6 +749,8 @@
       renderRepeatMap(colors);
       renderStateBar(colors);
       renderVehicleBar(colors);
+      renderVinDistribution(colors);
+      setupVinControls();
     }
 
     const toggle = document.getElementById('theme-toggle');
